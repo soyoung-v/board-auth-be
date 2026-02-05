@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: board-auth
+  datasource:
+    url: jdbc:log4jdbc:mysql://localhost:3306/board_auth
+    username: root
+    password: qaws7579
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mappers/**/*.xml
