@@ -1,8 +1,12 @@
 package com.green.boardauth.application.user;
 
-import com.green.boardauth.application.model.UserSignInReq;
-import com.green.boardauth.application.model.UserSignUpReq;
+import com.green.boardauth.application.user.model.UserSignInReq;
+import com.green.boardauth.application.user.model.UserSignInRes;
+import com.green.boardauth.application.user.model.UserSignUpReq;
+import com.green.boardauth.configuration.model.JwtUser;
 import com.green.boardauth.configuration.model.ResultResponse;
+import com.green.boardauth.configuration.security.JwtTokenManager;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,19 +20,30 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/user")
 public class UserController {
     private final UserService userService;
+    private final JwtTokenManager jwtTokenManager;
 
     @PostMapping("/signup")
-    public ResultResponse<Integer> sigUp(@RequestBody UserSignUpReq req){
-        log.info("p: {}", req);
-        int result = userService.sigUp(req);
-        return  new ResultResponse<>("회원가입 성공", result);
+    public ResultResponse<Integer> signUp(@RequestBody UserSignUpReq req) {
+        log.info("req: {}", req);
+        int result = userService.signUp(req);
+        return new ResultResponse<>("회원가입 성공", result);
     }
 
     @PostMapping("/signin")
-    public ResultResponse<Integer> SignIn(@RequestBody UserSignInReq req){
+    public ResultResponse<?> signIn(HttpServletResponse res, @RequestBody UserSignInReq req) {
         log.info("req: {}", req);
-        int result = userService.sigIn(req);
-        return new ResultResponse<>(result ==1 ? "로그인 성공" : "로그인 실패", result);
+        UserSignInRes userSignInRes = userService.signIn(req);
+        //보안 쿠키 처리
+        if(userSignInRes != null) {
+            JwtUser jwtUser = new JwtUser( userSignInRes.getSignedUserId() );
+            jwtTokenManager.issue(res, jwtUser);
+        }
+        return new ResultResponse<>(userSignInRes == null ? "로그인 실패" : "로그인 성공", userSignInRes);
     }
 
+    @PostMapping("/signout")
+    public ResultResponse<?> signOut(HttpServletResponse res){
+        jwtTokenManager.signOut(res);
+        return new ResultResponse<>("로그아웃 성공",1);
+    }
 }

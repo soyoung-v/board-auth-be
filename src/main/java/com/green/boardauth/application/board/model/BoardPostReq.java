@@ -1,0 +1,15 @@
+package com.green.boardauth.application.board.model;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Setter
+@Getter
+@ToString
+public class BoardPostReq {
+    private long id; //insert한  row 의 pk값을 담을 공간 할당
+    private String title;
+    private String contents;
+    private long userId;
+}

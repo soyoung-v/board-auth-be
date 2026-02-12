@@ -1,4 +1,4 @@
-package com.green.boardauth.application.model;
+package com.green.boardauth.application.user.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,9 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class UserSignUpReq {
+public class UserSignInReq {
     private String uid;
     private String upw;
-    private String nm;
-    private int gender;
 }

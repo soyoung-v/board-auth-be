@@ -1,7 +1,7 @@
 package com.green.boardauth.application.user;
 
-import com.green.boardauth.application.model.UserGetOneRes;
-import com.green.boardauth.application.model.UserSignUpReq;
+import com.green.boardauth.application.user.model.UserGetOneRes;
+import com.green.boardauth.application.user.model.UserSignUpReq;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
