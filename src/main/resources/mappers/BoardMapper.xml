@@ -49,6 +49,11 @@
         WHERE id = #{id}
         AND user_id = #{signedUserId}
     </update>
-
+    <select id="findText">
+        SELECT DISTINCT title
+        FROM board
+        WHERE title LIKE CONCAT(#{searchText}, '%')
+        LIMIT 10
+    </select>
 
 </mapper>

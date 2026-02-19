@@ -26,8 +26,12 @@ public class BoardService {
     public int delBoard(BoardDelReq req) {
         return boardMapper.delBoard(req);
     }
-    public int putBoard( BoardPutReq req){
-        return boardMapper.update(req);
+    public long putBoard( BoardPutReq req){
+        boardMapper.update(req);
+        return req.getId();
+    }
+    public List<BoardGetText> getBoardText(BoardGetText req){
+        return boardMapper.findText(req);
     }
 }
 

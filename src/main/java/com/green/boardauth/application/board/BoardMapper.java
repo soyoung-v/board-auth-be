@@ -14,4 +14,5 @@ public interface BoardMapper {
     BoardGetOneReq findOne(long id);
     int delBoard(BoardDelReq req);
     int update(BoardPutReq req);
+    List<BoardGetText> findText(BoardGetText req);
 }

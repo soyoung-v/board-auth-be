@@ -56,8 +56,15 @@ public class BoardController {
     @PutMapping
     public ResultResponse<?> putBoard(@AuthenticationPrincipal UserPrincipal userPrincipal, @RequestBody BoardPutReq req){
         req.setSignedUserId( userPrincipal.getSignedUserId());
-        int id = boardService.putBoard(req);
+        long id = boardService.putBoard(req);
         String message = id > 0 ? "수정 성공" : "수정 실패";
         return new ResultResponse<>(message, id);
+    }
+
+    @GetMapping("/related_search")
+    public ResultResponse<?> getText(@ModelAttribute BoardGetText req){
+        log.info("req: {}", req);
+        List<BoardGetText> text = boardService.getBoardText(req);
+        return new ResultResponse<>( String.format("%d rows", text.size()), text );
     }
 }
